@@ -5,14 +5,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
+type Providers = Awaited<ReturnType<typeof getProviders>>;
+type Provider = { name: string; id: string };
+
 const Nav = () => {
-  const [providers, setProviders] = useState<any>(null);
+  const [providers, setProviders] = useState<Providers | Providers[] | null>(
+    null
+  );
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
   const { data: session } = useSession();
 
   useEffect(() => {
     (async () => {
-      const res = await getProviders();
+      const res: Providers = await getProviders();
       setProviders(res);
     })();
   }, []);
@@ -120,7 +125,7 @@ const Nav = () => {
         ) : (
           <>
             {providers &&
-              Object.values(providers).map((provider: any) => (
+              Object.values(providers).map((provider: Provider) => (
                 <button
                   type="button"
                   key={provider.name}
