@@ -6,12 +6,16 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 type Providers = Awaited<ReturnType<typeof getProviders>>;
-type Provider = { name: string; id: string };
+type Provider = {
+  name: string;
+  id: string;
+  type?: string;
+  signinUrl?: string;
+  callbackUrl?: string;
+};
 
 const Nav = () => {
-  const [providers, setProviders] = useState<Providers | Providers[] | null>(
-    null
-  );
+  const [providers, setProviders] = useState<Providers | null>(null);
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
   const { data: session } = useSession();
 
@@ -64,7 +68,7 @@ const Nav = () => {
         ) : (
           <>
             {providers &&
-              Object.values(providers).map((provider: any) => (
+              Object.values(providers).map((provider: Provider) => (
                 <button
                   type="button"
                   key={provider.name}
