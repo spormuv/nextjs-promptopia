@@ -13,7 +13,7 @@ export interface IPost {
 const CreatePrompt = () => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [post, setPost] = useState<IPost>({ prompt: '', tag: '' });
-  const { data: session } = useSession();
+  const { data: session }: { data: any } = useSession();
   const router = useRouter();
 
   const createPrompt = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
@@ -23,12 +23,9 @@ const CreatePrompt = () => {
     try {
       const response = await fetch('/api/prompt/new', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           prompt: post.prompt,
-          userId: session?.user?.id,
+          userId: session?.user.id,
           tag: post.tag,
         }),
       });
